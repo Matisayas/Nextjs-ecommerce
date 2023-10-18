@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import Spinner from "./Spinner";
+import { ReactSortable } from "react-sortablejs";
 
 // Define el componente ProductForm
 export default function ProductForm({
@@ -63,6 +64,10 @@ export default function ProductForm({
         router.push('/products');
     }
 
+    
+    function updateImagesOrder(){
+        console.log(arguments)
+    }
     // Renderiza el formulario
     return (
         <form onSubmit={saveProduct}>
@@ -74,12 +79,18 @@ export default function ProductForm({
                 onChange={ev => setTitle(ev.target.value)} />
             <label>Photos</label>
             <div className="mb-2 flex flex-wrap gap-1">
+                <ReactSortable     //ME QUEDE EN 3HS DEL VIDEO
+                list={images}
+                className="flex flex-wrap gap-1"
+                setList={updateImagesOrder}>
                 {/* Mapea las imágenes y las muestra en el formulario */}
                 {!!images?.length > 0 && images.map((link, index) => (
                     <div key={link + index} className="h-24 ">
-                        <img src={link} alt="" className="rounded-lg" />
+                        <img src={link} alt="" 
+                            className="rounded-lg" />
                     </div>
-                ))}
+                        ))}
+                </ReactSortable>
                 {isUploading && (
                     <div className="h-24 flex items-center">
                         <Spinner/>
