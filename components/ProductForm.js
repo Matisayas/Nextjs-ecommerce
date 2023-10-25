@@ -1,7 +1,8 @@
+/* eslint-disable react/jsx-key */
 /* eslint-disable @next/next/no-img-element */ // Desactiva las advertencias de Next.js relacionadas con el elemento img
 
 // Importa las dependencias necesarias
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import Spinner from "./Spinner";
@@ -19,14 +20,23 @@ export default function ProductForm({
     const [title, setTitle] = useState(existingTitle || ''); // Nombre del producto
     const [images, setImages] = useState(existingImages || []); // Imágenes del producto
     const [description, setDescription] = useState(existingDescription || ''); // Descripción del producto
+    (existingDescription || '');
+    const [category, setCategory]= useState('');
     const [price, setPrice] = useState(existingPrice || ''); // Precio del producto
     const [goToProducts, setGoToProducts] = useState(false); // Variable para redireccionar a la página de productos
-    const router = useRouter(); // Instancia del enrutador de Next.js
     const [isUploading, setIsUploading] = useState(false);
-    // Función asincrónica para guardar un producto
+    const [categories, setCategories]= useState([])
+    const router = useRouter(); // Instancia del enrutador de Next.js
+    useEffect(()=>{
+        axios.get('/api/categories').then(result=>{
+           setCategories(result.data);
+        })
+
+    },[])    
+// Función asincrónica para guardar un producto
     async function saveProduct(ev) {
         ev.preventDefault();
-        const data = { title, description, price, images };
+        const data = { title, description, price, images, category};
         if (_id) {
             // Si _id existe, actualiza el producto existente
             await axios.put('/api/products', { ...data, _id });
@@ -65,8 +75,8 @@ export default function ProductForm({
     }
 
     
-    function updateImagesOrder(){
-        console.log(arguments)
+    function updateImagesOrder(images){
+       setImages(images);
     }
     // Renderiza el formulario
     return (
@@ -77,6 +87,14 @@ export default function ProductForm({
                 placeholder="product name"
                 value={title}
                 onChange={ev => setTitle(ev.target.value)} />
+                <label>Category</label>
+                <select value={category}
+                 onChange={ev => setCategory(ev.target.value)}>
+                    <option value="">Uncategorized</option>
+                    {categories.length> 0 && categories.map(c => (
+                        <option value={c._id}>{c.name}</option>
+                    ))}
+                </select>
             <label>Photos</label>
             <div className="mb-2 flex flex-wrap gap-1">
                 <ReactSortable     //ME QUEDE EN 3HS DEL VIDEO

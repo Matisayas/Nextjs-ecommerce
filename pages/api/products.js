@@ -15,9 +15,9 @@ if(method === 'GET') {
 }
 
 if(method === 'POST'){
-    const {title,description,price,images}= req.body;
+    const {title,description,price,images, category}= req.body;
     const productDoc = await Product.create({
-        title,description,price,images
+        title,description,price,images, category,
 
     })
     res.json(productDoc);
@@ -25,8 +25,8 @@ if(method === 'POST'){
     }   
 
 if (method === 'PUT'){
-    const {title,description,price,_id,images}= req.body;
-    await Product.updateOne({_id}, {title,description,price,images});
+    const {title,description,price,_id,images, category}= req.body;
+    await Product.updateOne({_id}, {title,description,price,images, category});
     res.json(true);
     }
     
