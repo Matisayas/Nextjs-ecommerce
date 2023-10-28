@@ -11,6 +11,7 @@ function Categories({swal}){
   const [parentCategory, setParentCategory] = useState('');
   // Estado para almacenar las categorías disponibles
   const [categories, setCategories] = useState([]);
+  const [properties, setProperties]= useState([])
 
   useEffect(() => {
     // Cargar categorías cuando el componente se monta
@@ -64,7 +65,14 @@ function Categories({swal}){
         fetchCategories();
       }
       });
- 
+  }
+  function addProperty(){
+    setProperties(prev =>{
+      return [...prev, {name:'', values:''}]
+    })
+  }
+  function handelPropertyNameChange(index,property,newName){
+
   }
 
   return (
@@ -74,10 +82,10 @@ function Categories({swal}){
       ? `Edit Category ${editedCategory.name}`: 
       'Create new category'}
       </label>
-      <form onSubmit={saveCategory} className="flex gap-1">
-        {/* Campo de entrada para el nombre de la categoría */}
+      <form onSubmit={saveCategory}>
+        
+        <div className=" flex gap-1">
         <input
-          className="mb-0"
           type="text"
           placeholder={'Category name'}
           onChange={ev => setName(ev.target.value)}
@@ -85,7 +93,6 @@ function Categories({swal}){
         />
         {/* Selección de categoría principal */}
         <select
-          className="mb-0"
           onChange={ev => setParentCategory(ev.target.value)}
           value={parentCategory}
         >
@@ -96,7 +103,35 @@ function Categories({swal}){
           ))}
         </select>
         {/* Botón para guardar la categoría */}
-        <button type="submit" className="btn-primary py-1">
+          </div>
+          <div className="mb-2">
+            <label className="block">Properties</label>
+            <button 
+            onClick={addProperty}
+            type="button"
+            className="btn-default text-sm"
+            >Add new property
+            </button>
+            {properties.length > 0 && properties.map((property, index) =>(
+                <div className="flex gap-1">
+                  <input 
+                  type="text"
+                  onChange={ev=>handelPropertyNameChange(index, property, ev.target.value)}
+                  value={property.name}
+                   placeholder="property name (example:color)"/>
+                  <input
+                   type="text" 
+                   value={property.values}
+                   placeholder="values, comma separated"/>
+                  </div>
+
+            ))}
+          </div>
+          {/* Campo de entrada para el nombre de la categoría */}
+        <button
+         type="submit" 
+
+         className="btn-primary py-1">
           Save
         </button>
       </form>

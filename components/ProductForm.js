@@ -14,14 +14,15 @@ export default function ProductForm({
     title: existingTitle,
     description: existingDescription,
     price: existingPrice,
-    images: existingImages
+    images: existingImages,
+    category: assignedCategory,
   }) {
     // Utiliza el estado local para manejar los datos del formulario
     const [title, setTitle] = useState(existingTitle || ''); // Nombre del producto
     const [images, setImages] = useState(existingImages || []); // Imágenes del producto
     const [description, setDescription] = useState(existingDescription || ''); // Descripción del producto
     (existingDescription || '');
-    const [category, setCategory]= useState('');
+    const [category, setCategory]= useState(assignedCategory || '');
     const [price, setPrice] = useState(existingPrice || ''); // Precio del producto
     const [goToProducts, setGoToProducts] = useState(false); // Variable para redireccionar a la página de productos
     const [isUploading, setIsUploading] = useState(false);
