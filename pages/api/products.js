@@ -14,19 +14,22 @@ if(method === 'GET') {
    }
 }
 
-if(method === 'POST'){
-    const {title,description,price,images, category}= req.body;
+if (method === 'POST') {
+    const { title, description, price, images, category, properties } = req.body;
+
+    const categoryValue = category || null; // Usar null si no se selecciona una categoría
+
     const productDoc = await Product.create({
-        title,description,price,images, category,
-
-    })
+        title, description, price, images, category: categoryValue, properties
+    });
     res.json(productDoc);
+}
 
-    }   
+
 
 if (method === 'PUT'){
-    const {title,description,price,_id,images, category}= req.body;
-    await Product.updateOne({_id}, {title,description,price,images, category});
+    const {title,description,price,_id,images, category, properties}= req.body;
+    await Product.updateOne({_id}, {title,description,price,images, category,properties});
     res.json(true);
     }
     
